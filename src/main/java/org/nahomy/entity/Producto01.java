@@ -27,6 +27,9 @@ public class Producto01
         this.descripcion = descripcion;
     }
 
+    public Producto01() {
+    }
+
     public int getId(){return id;}
 
     public void setId(int id){this.id = id;}

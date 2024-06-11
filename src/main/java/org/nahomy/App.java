@@ -30,6 +30,8 @@ public class App
 
         JFrame frame = new JFrame();
 
+        //new MiVentana().setVisible(true);
+
         frame.setSize(300, 300);
         frame.setTitle("Inicio de sesión");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,10 +39,10 @@ public class App
         frame.setLayout(null);
 
 
-        JLabel label = new JLabel("Nombre");
+        JLabel label = new JLabel("Correo");
         label.setBounds(10,30,60,60);
-        JTextField nombre = new JTextField(30);
-        nombre.setBounds(70,45,200,25);
+        JTextField correo = new JTextField(30);
+        correo.setBounds(70,45,200,25);
 
 
         JLabel label1 = new JLabel("Contraseña");
@@ -56,7 +58,7 @@ public class App
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String usuario = nombre.getText();
+                String usuario = correo.getText();
                 String emPtrn =
                         "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
                 Pattern pattern1 = Pattern.compile(emPtrn);
@@ -88,7 +90,7 @@ public class App
         });
 
         frame.add(label);
-        frame.add(nombre);
+        frame.add(correo);
         frame.add(label1);
         frame.add(contraseña);
         frame.add(enviarButton);

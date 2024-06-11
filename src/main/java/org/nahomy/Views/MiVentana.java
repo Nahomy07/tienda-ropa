@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.net.URL;
 
 public class MiVentana extends JFrame
 {
@@ -18,14 +19,24 @@ public class MiVentana extends JFrame
 
     public MiVentana()
     {
+        super("Venta de ropa");
         desktopPane = new JDesktopPane();
         setLayout(new BorderLayout());
-        setSize(800,800);
+        setSize(750,750);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
+        getContentPane().add(desktopPane, BorderLayout.CENTER);
+        setResizable(false);
 
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(400,400));
+        URL rutaImagen = MiVentana.class.getResource("/PsStore.png");
+        ImageIcon imagen = new ImageIcon(rutaImagen);
+        setIconImage(imagen.getImage());
+        setVisible(true);
+
+       // JPanel panel = new JPanel();
+        //panel.setPreferredSize(new Dimension(800,800));
+
         //Barra de menu
         JMenuBar menuBar = new JMenuBar();
         JMenu menuApp = new JMenu("App");
@@ -38,75 +49,28 @@ public class MiVentana extends JFrame
         JMenu menuAyuda = new JMenu("Ayuda");
         //Acerca de
 
-
-        ActionListener  clienteListener = new ActionListener()
+        ActionListener salirListener = new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                desktopPane = new JDesktopPane();
-                getContentPane().add(desktopPane, BorderLayout.CENTER);
-                AgregarAventana(Cliente.getInstancia());
-                setVisible(true);
-                JOptionPane.showMessageDialog(null, "Cliente");
-            }
-        };
-
-        ActionListener productoListener = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Producto producto = new Producto();
-                desktopPane = new JDesktopPane();
-                desktopPane.add(producto);
-                producto.setVisible(true);
-                JOptionPane.showMessageDialog(null, "Producto");
-            }
-        };
-
-        ActionListener proveedorListener = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                desktopPane = new JDesktopPane();
-                getContentPane().add(desktopPane, BorderLayout.CENTER);
-                AgregarAventana(Proveedor.getInstancia());
-                setVisible(true);
-                JOptionPane.showMessageDialog(null,"Proveedor");
-            }
-        };
-
-        ActionListener vendedorListener = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                Vendedor vendedor = new Vendedor();
-                desktopPane.add(vendedor);
-                vendedor.setVisible(true);
-                JOptionPane.showMessageDialog(null, "Vendedor");
-            }
-        };
-
-        ActionListener acercadeListener = new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                JOptionPane.showMessageDialog(null, "Acerca de");
+                JOptionPane.showMessageDialog(null, "Salir");
             }
         };
 
         //Creamos los JMenuItem
         JMenuItem salir = new JMenuItem("Salir");
+        salir.setMnemonic('A');
+        salir.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), false));
+        salir.addActionListener(salirListener);
         JMenuItem cliente = new JMenuItem("Cliente");
         this.getContentPane().add(desktopPane, BorderLayout.CENTER);
         JMenuItem producto = new JMenuItem("Producto");
         this.getContentPane().add(desktopPane, BorderLayout.CENTER);
         JMenuItem proveedor = new JMenuItem("Proveedor");
+        this.getContentPane().add(desktopPane, BorderLayout.CENTER);
         JMenuItem vendedor = new JMenuItem("Vendedor");
+        this.getContentPane().add(desktopPane, BorderLayout.CENTER);
         JMenuItem acercade = new JMenuItem("Acerca de");
 
 
@@ -148,8 +112,6 @@ public class MiVentana extends JFrame
         proveedor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                desktopPane = new JDesktopPane();
-                getContentPane().add(desktopPane, BorderLayout.CENTER);
                 AgregarAventana(Proveedor.getInstancia());
                 setVisible(true);
             }
@@ -158,8 +120,6 @@ public class MiVentana extends JFrame
         vendedor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                desktopPane = new JDesktopPane();
-                getContentPane().add(desktopPane, BorderLayout.CENTER);
                 AgregarAventana(Vendedor.getInstancia());
                 setVisible(true);
             }
@@ -178,30 +138,17 @@ public class MiVentana extends JFrame
         menuAyuda.add(acercade);
 
         //agregar todos los menu a la barra
-        menuBar.setPreferredSize(new Dimension(200,40));
+        menuBar.setPreferredSize(new Dimension(160,40));
         menuBar.add(menuApp);
         menuBar.add(menuEntidades);
         menuBar.add(menuAyuda);
 
 
-
+        setJMenuBar(menuBar);
         //agregar la barra menu al panel
-        panel.add(menuBar, BorderLayout.NORTH);
-        add(panel);
+//        panel.add(menuBar, BorderLayout.NORTH);
+//        add(panel);
     }
-
-//
-//        desktopPane = new JDesktopPane();
-//        getContentPane().add(desktopPane, BorderLayout.NORTH);
-//        AgregarAventana(Proveedor.getInstancia());
-//        setVisible(true);
-//
-//        desktopPane = new JDesktopPane();
-//        getContentPane().add(desktopPane, BorderLayout.WEST);
-//        AgregarAventana(Vendedor.getInstancia());
-//        setVisible(true);
-
-   // }
 
     public static void AgregarAventana(JInternalFrame ventanaInterna) //nuevo
     {
@@ -212,28 +159,6 @@ public class MiVentana extends JFrame
         ventanaInterna.setVisible(true);
 
     }
-
-//    private static void mostrarVentana(JInternalFrame frm)
-//    {
-//        try {
-//            //Agregar ventana si la ventana no esta visible
-//            if(!frm.isVisible()){
-//                MiVentana.AgregarAventana(frm);
-//            }
-//            else {
-//                // si la ventana esta visible pero debajo de otras se mueve al frente
-//                frm.moveToFront();
-//                if (!frm.isSelected()) {
-//                    frm.setSelected(true);
-//                }
-//            }
-//        }
-//        catch (PropertyVetoException e)
-//        {
-//            System.out.println("Error al activar la ventana");
-//        }
-//    }
-//
 }
 
 
