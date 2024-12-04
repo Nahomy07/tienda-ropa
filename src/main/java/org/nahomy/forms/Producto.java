@@ -45,11 +45,19 @@ public class Producto extends JInternalFrame
         panel1.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         //panel de la tabla
-        tablaModelo = new DefaultTableModel();
-        tablaModelo.addColumn("id");
-        tablaModelo.addColumn("Nombre");
-        tablaModelo.addColumn("Precio");
-        tablaModelo.addColumn("Descripcion");
+
+        String[] columnas={"id","Nombre","Precio","Descripcion"};
+//        tablaModelo.addColumn("id");
+//        tablaModelo.addColumn("Nombre");
+//        tablaModelo.addColumn("Precio");
+//        tablaModelo.addColumn("Descripcion");
+        tablaModelo = new DefaultTableModel(null,columnas)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         JTable tabla = new JTable(tablaModelo);
 
         JScrollPane tablaScrollPane = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -87,6 +95,15 @@ public class Producto extends JInternalFrame
                 String nombretext = nombre.getText();
                 String preciotext = precio.getText();
                 String descripciontext = descripcion.getText();
+                if (nombretext.isEmpty() || preciotext.isEmpty() || descripciontext.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Por favor, complete todos los campos antes de guardar.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return; // Salir si no se cumplen las condiciones
+                }
                 Producto01 producto01 = new Producto01(nombretext, preciotext, descripciontext);
                 saveProducto01(producto01);
                 addFilas(tablaModelo);
@@ -112,14 +129,14 @@ public class Producto extends JInternalFrame
                     String nombre1 = nombre.getText().trim();
                     String precio1 = precio.getText();
                     String descripcion1 = descripcion.getText().trim();
-                    String id = (String) tabla.getValueAt(i, 0);
+                    int id = Integer.parseInt(tabla.getValueAt(i, 0).toString());
                     if (nombre1.isEmpty()|| precio1.isEmpty()||descripcion1.isEmpty()){
                         JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
                         entradaValida = false;
                     }
                     if (entradaValida){
                         for (Producto01 producto : productos) {
-                            if (id.equalsIgnoreCase(producto.getNombre())) {
+                            if (producto.getId() == id){
                                 producto.setNombre(nombre1);
                                 producto.setPrecio(precio1);
                                 producto.setDescripcion(descripcion1);

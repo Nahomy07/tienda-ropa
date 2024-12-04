@@ -1,10 +1,7 @@
 package org.nahomy.Views;
 
 import org.hibernate.mapping.Property;
-import org.nahomy.forms.Cliente;
-import org.nahomy.forms.Producto;
-import org.nahomy.forms.Proveedor;
-import org.nahomy.forms.Vendedor;
+import org.nahomy.forms.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +17,8 @@ public class MiVentana extends JFrame
     public MiVentana()
     {
         super("Venta de ropa");
+
+        JOptionPane.showMessageDialog(null,"Bienvenido a Megaropa!","Bienvenido",JOptionPane.INFORMATION_MESSAGE);
         desktopPane = new JDesktopPane();
         setLayout(new BorderLayout());
         setSize(750,750);
@@ -70,6 +69,12 @@ public class MiVentana extends JFrame
         JMenuItem proveedor = new JMenuItem("Proveedor");
         this.getContentPane().add(desktopPane, BorderLayout.CENTER);
         JMenuItem vendedor = new JMenuItem("Vendedor");
+        this.getContentPane().add(desktopPane, BorderLayout.CENTER);
+        JMenuItem venta = new JMenuItem("Venta");
+        this.getContentPane().add(desktopPane, BorderLayout.CENTER);
+        JMenuItem inventario = new JMenuItem("Inventario");
+        this.getContentPane().add(desktopPane, BorderLayout.CENTER);
+        JMenuItem registro = new JMenuItem("Registro");
         this.getContentPane().add(desktopPane, BorderLayout.CENTER);
         JMenuItem acercade = new JMenuItem("Acerca de");
 
@@ -125,6 +130,30 @@ public class MiVentana extends JFrame
             }
         });
 
+        venta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AgregarAventana(Venta.getInstancia());
+                setVisible(true);
+            }
+        });
+
+        inventario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AgregarAventana(Inventario.getInstancia());
+                setVisible(true);
+            }
+        });
+
+        registro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AgregarAventana(Registro.getInstancia());
+                setVisible(true);
+            }
+        });
+
         //agregar los items a los menus
         menuApp.add(salir);
 
@@ -133,6 +162,9 @@ public class MiVentana extends JFrame
         menuEntidades.add(producto);
         menuEntidades.add(proveedor);
         menuEntidades.add(vendedor);
+        menuEntidades.add(venta);
+        menuEntidades.add(inventario);
+        menuEntidades.add(registro);
 
 
         menuAyuda.add(acercade);

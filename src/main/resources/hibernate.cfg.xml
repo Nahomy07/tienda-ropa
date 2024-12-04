@@ -18,5 +18,8 @@
         <mapping class="org.nahomy.entity.Producto01"></mapping>
         <mapping class="org.nahomy.entity.Proveedor01"></mapping>
         <mapping class="org.nahomy.entity.Vendedor01"></mapping>
+        <mapping class="org.nahomy.entity.Venta01"></mapping>
+        <mapping class="org.nahomy.entity.Inventario01"></mapping>
+        <mapping class="org.nahomy.entity.Registro01"></mapping>
     </session-factory>
 </hibernate-configuration>

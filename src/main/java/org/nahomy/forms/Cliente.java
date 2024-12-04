@@ -89,6 +89,15 @@ public class Cliente extends JInternalFrame
                 String nombretext = nombre.getText();
                 String apellidotext = apellido.getText();
                 String telefonotext = telefono.getText();
+                if (nombretext.isEmpty() || apellidotext.isEmpty() || telefonotext.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Por favor, complete todos los campos antes de guardar.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return; // Salir si no se cumplen las condiciones
+                }
                 Cliente01 cliente01 = new Cliente01(nombretext,apellidotext,telefonotext);
                 saveCliente01(cliente01);
                 addFilas(tablaModelo);
@@ -108,21 +117,26 @@ public class Cliente extends JInternalFrame
                 int i = tabla.getSelectedRow();
                 boolean entradaValida = true;
                 if (i < 0){
-                    JOptionPane.showMessageDialog(null,"Seleccione una fila", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Seleccione una fila",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                     entradaValida = false;
                 }
                 else {
-                    String nombre1 = nombre.getText().trim();
+                    String nombre1 = nombre.getText();
                     String apellido1 = apellido.getText();
-                    String telefono1 = telefono.getText().trim();
-                    String id = (String) tabla.getValueAt(i, 0);
-                    if (nombre1.isEmpty()|| apellido1.isEmpty()||telefono1.isEmpty()){
+                    String telefono1 = telefono.getText();
+                    int id = Integer.parseInt(tabla.getValueAt(i, 0).toString());
+                    if (nombre1.isEmpty()|| apellido1.isEmpty()|| telefono1.isEmpty()){
                         JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
                         entradaValida = false;
+
+                        return;
                     }
                 if (entradaValida){
                     for (Cliente01 cliente : clientes){
-                        if (id.equalsIgnoreCase(cliente.getNombre())){
+                        if (cliente.getId() == id){
                             cliente.setNombre(nombre1);
                             cliente.setApellido(apellido1);
                             cliente.setTelefono(telefono1);

@@ -3,15 +3,11 @@ package org.nahomy.forms;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.nahomy.Util.HibernateUtil;
-import org.nahomy.entity.Cliente01;
-import org.nahomy.entity.Producto01;
-import org.nahomy.entity.Proveedor01;
 import org.nahomy.entity.Vendedor01;
 import org.nahomy.services.GenericServiceImpl;
 import org.nahomy.services.IGenericService;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -47,11 +43,19 @@ public class Vendedor extends JInternalFrame
         panel1.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         //panel de la tabla
-        tablaModelo = new DefaultTableModel();
-        tablaModelo.addColumn("id");
-        tablaModelo.addColumn("Nombre");
-        tablaModelo.addColumn("Apellido");
-        tablaModelo.addColumn("Telefono");
+//        tablaModelo = new DefaultTableModel();
+//        tablaModelo.addColumn("id");
+//        tablaModelo.addColumn("Nombre");
+//        tablaModelo.addColumn("Apellido");
+//        tablaModelo.addColumn("Telefono");
+        String[] columnas={"id","Nombre","Apellido","Telefono"};
+        tablaModelo = new DefaultTableModel(null,columnas)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         JTable tabla = new JTable(tablaModelo);
 
         JScrollPane tablaScrollPane = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -76,9 +80,9 @@ public class Vendedor extends JInternalFrame
         JLabel label2 = new JLabel("Telefono");
         label2.setBounds(0, 40, 60, 60);
         JTextField telefono = new JTextField(30);
-       telefono.setOpaque(false);
+        telefono.setOpaque(false);
         label2.setForeground(new Color(250, 249, 249));
-       telefono.setBorder(new MatteBorder(0,0,1,0,Color.white));
+        telefono.setBorder(new MatteBorder(0,0,1,0,Color.white));
 
         //Creacion del boton y configuracion del Listener
         JButton enviarButton = new JButton("Guardar");
@@ -93,6 +97,15 @@ public class Vendedor extends JInternalFrame
                 String nombretext = nombre.getText();
                 String apellidotext = apellido.getText();
                 String telefonotext = telefono.getText();
+                if (nombretext.isEmpty() || apellidotext.isEmpty() || telefonotext.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Por favor, complete todos los campos antes de guardar.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return; // Salir si no se cumplen las condiciones
+                }
                 Vendedor01 vendedor01 = new Vendedor01(nombretext, apellidotext, telefonotext);
                 saveVendedor01(vendedor01);
                 addFilas(tablaModelo);
@@ -118,14 +131,14 @@ public class Vendedor extends JInternalFrame
                     String nombre1 = nombre.getText().trim();
                     String apellido1 = apellido.getText();
                     String telefono1 = telefono.getText().trim();
-                    String id = (String) tabla.getValueAt(i, 0);
+                    int id = Integer.parseInt(tabla.getValueAt(i,0).toString());
                     if (nombre1.isEmpty() || apellido1.isEmpty() || telefono1.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
                         entradaValida = false;
                     }
                     if (entradaValida) {
                         for (Vendedor01 vendedor : vendedores) {
-                            if (id.equalsIgnoreCase(vendedor.getNombre())) {
+                            if (vendedor.getId() == id) {
                                 vendedor.setNombre(nombre1);
                                 vendedor.setApellido(apellido1);
                                 vendedor.setTelefono(telefono1);

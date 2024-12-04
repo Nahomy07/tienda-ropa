@@ -46,11 +46,19 @@ public class Proveedor extends JInternalFrame
         panel1.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         //panel de la tabla
-        tablaModelo = new DefaultTableModel();
-        tablaModelo.addColumn("id");
-        tablaModelo.addColumn("Nombre");
-        tablaModelo.addColumn("Apellido");
-        tablaModelo.addColumn("Telefono");
+//        tablaModelo = new DefaultTableModel();
+//        tablaModelo.addColumn("id");
+//        tablaModelo.addColumn("Nombre");
+//        tablaModelo.addColumn("Apellido");
+//        tablaModelo.addColumn("Telefono");
+
+        String[] columnas={"id","Nombre","Apellido","Telefono"};
+        tablaModelo = new DefaultTableModel(null, columnas){
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         JTable tabla = new JTable(tablaModelo);
 
         JScrollPane tablaScrollPane = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -91,6 +99,15 @@ public class Proveedor extends JInternalFrame
                 String nombretxt = nombre.getText();
                 String apellidotxt = apellido.getText();
                 String telefonotxt = telefono.getText();
+                if (nombretxt.isEmpty() || apellidotxt.isEmpty() || telefonotxt.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Por favor, complete todos los campos antes de guardar.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return; // Salir si no se cumplen las condiciones
+                }
                 Proveedor01 proveedor01 = new Proveedor01(nombretxt, apellidotxt, telefonotxt);
                 saveProveedor01(proveedor01);
                 addFilas(tablaModelo);
@@ -116,14 +133,14 @@ public class Proveedor extends JInternalFrame
                     String nombre1 = nombre.getText().trim();
                     String apellido1 = apellido.getText();
                     String telefono1 = telefono.getText().trim();
-                    String id = (String) tabla.getValueAt(i, 0);
+                    int id = Integer.parseInt(tabla.getValueAt(i,0).toString());
                     if (nombre1.isEmpty()|| apellido1.isEmpty()||telefono1.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
                         entradaValida = false;
                     }
                     if(entradaValida){
                         for (Proveedor01 proveedor : proveedores) {
-                            if (id.equalsIgnoreCase(proveedor.getNombre())) {
+                            if (proveedor.getId() == id) {
                                 proveedor.setNombre(nombre1);
                                 proveedor.setApellido(apellido1);
                                 proveedor.setTelefono(telefono1);
